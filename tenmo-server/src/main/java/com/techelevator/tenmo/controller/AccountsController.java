@@ -46,10 +46,10 @@ public class AccountsController {
 		return accountsDao.listBalanceById(id);
 	}
 	
-//	@RequestMapping(path = "users/create/{id}", method = RequestMethod.POST)
-//	public void createAccount(@RequestBody Accounts newAccount, @PathVariable int id) {
-//		accountsDao.createAccount(id, 1000.0);
-//	}
+	@RequestMapping(path = "users/create/{id}", method = RequestMethod.POST)
+	public void createAccount(@RequestBody Accounts newAccount, @PathVariable int id) {
+		accountsDao.createAccount(id, 1000.0);
+	}
 }
 
 

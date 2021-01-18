@@ -18,6 +18,6 @@ public interface AccountsDAO {
 	
 	void updateBalance(int id, Accounts updatedAccount);
 	
-//	Accounts createAccount(int userId, double balance);
+	Accounts createAccount(int userId, double balance);
 	
 }

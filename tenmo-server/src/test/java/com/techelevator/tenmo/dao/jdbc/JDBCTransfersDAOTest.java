@@ -1,9 +1,9 @@
 package com.techelevator.tenmo.dao.jdbc;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.sql.SQLException;
-import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -12,28 +12,20 @@ import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.Test;
 import org.junit.runners.MethodSorters;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
 import com.techelevator.tenmo.dao.TransfersDAO;
-import com.techelevator.tenmo.dao.UserSqlDAO;
 import com.techelevator.tenmo.model.Transfers;
+import com.techelevator.tenmo.model.User;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 
-@SpringBootTest
 class JDBCTransfersDAOTest {
 
-	@Autowired
 	private static SingleConnectionDataSource dataSource;
-	
-	@Autowired
 	private TransfersDAO dao;
-	
-	@Autowired
-	private UserSqlDAO userDao;
+	private User user;
 	
 	@BeforeClass
 	public static void setupDataSource() {
@@ -52,7 +44,6 @@ class JDBCTransfersDAOTest {
 	@Before
 	public void setup() {
 		dao = new JDBCTransfersDAO(new JdbcTemplate(dataSource));
-		userDao = new UserSqlDAO(new JdbcTemplate(dataSource));
 	}
 	
 	@After
@@ -61,22 +52,13 @@ class JDBCTransfersDAOTest {
 	}
 	
 	@Test
-	public void getTransferById_returns_transfer_corresponding_to_id() {
-		Transfers transfer = new Transfers(99, 1, 1, 1, 2, 99.0);
-		dao.sendTransfer(transfer, "user");
-		Transfers actual = dao.getTransferById(99);
-		
-		assertEquals(transfer.getTransferId(), actual.getTransferId());
-	}
+	void getTransferById_returns_transfer_corresponding_to_id() {
 	
-	@Test
-	public void listAll_lists_all_transfers() {
-		Transfers transfer = new Transfers(99, 1, 1, 1, 2, 99.0);
-		List<Transfers> expected = dao.listAll("admin");
-		dao.sendTransfer(transfer, "admin");
-		List<Transfers> actual = dao.listAll("admin");
 		
-		assertEquals(expected.size(), actual.size());
+		Transfers transfer = new Transfers(99, 1, 1, 1, 2, 99.0);
+		dao.sendTransfer(transfer, user.getUsername());
+		
+		assertEquals(transfer, dao.getTransferById(99));
 	}
 
 }

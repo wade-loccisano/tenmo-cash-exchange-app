@@ -24,12 +24,12 @@ public class JDBCAccountsDAO implements AccountsDAO{
 	}
 
 
-//	@Override
-//	public Accounts createAccount(int userId, double balance) {
-//		String sql = "INSERT INTO accounts (user_id, balance) VALUES (?, ?)";
-//		Accounts account = jdbcTemplate.queryForObject(sql, new Object[] { userId, balance }, Accounts.class);
-//		return account;
-//	}
+	@Override
+	public Accounts createAccount(int userId, double balance) {
+		String sql = "INSERT INTO accounts (user_id, balance) VALUES (?, ?) RETURNING user_id";
+		Accounts account = jdbcTemplate.queryForObject(sql, new Object[] { userId, balance }, Accounts.class);
+		return account;
+	}
 	
 	@Override
 	public Accounts listBalance(String username) {
